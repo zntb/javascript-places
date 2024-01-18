@@ -1,25 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>My Place</title>
-    <link rel="stylesheet" href="../assets/styles/app.css" />
-    <link rel="stylesheet" href="../assets/styles/my-place.css" />
-    <script src="../assets/scripts/MyPlace.js" defer></script>
-  </head>
-  <body>
-    <header>
-      <h1></h1>
-    </header>
 
-    <section id="selected-place">
-      <div id="map"></div>
-    </section>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>My Place</title>
+  <link rel="stylesheet" href="../assets/styles/app.css" />
+  <link rel="stylesheet" href="../assets/styles/my-place.css" />
+  <script src="../assets/scripts/MyPlace.js" defer></script>
+</head>
 
-    <section id="share-controls">
-      <a href="/">Share a New Place!</a>
-    </section>
-  </body>
+<body>
+  <header>
+    <h1></h1>
+  </header>
+
+  <section id="selected-place">
+    <div id="map"></div>
+  </section>
+
+  <section id="share-controls">
+    <a href="/">Share a New Place!</a>
+  </section>
+
+  <script>
+    fetch('http://localhost:3000/getApiKey') // Update the URL accordingly
+      .then(response => response.json())
+      .then(data => {
+        const apiKey = data.apiKey;
+
+        // Create a script element
+        const scriptElement = document.createElement('script');
+
+        // Set the source with the API key
+        scriptElement.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+
+        // Set 'async' and 'defer' attributes
+        // scriptElement.async = true;
+        scriptElement.defer = true;
+
+        // Append the script to the head
+        document.head.appendChild(scriptElement);
+
+        // Now you can use apiKey in your JavaScript code
+        // console.log('API Key:', apiKey);
+      })
+      .catch(error => console.error('Error fetching API key:', error));
+  </script>
+</body>
+
 </html>

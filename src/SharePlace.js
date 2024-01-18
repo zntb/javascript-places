@@ -1,6 +1,6 @@
 import { Modal } from './UI/Modal';
 import { Map } from './UI/Map';
-import { getCoordsFromAddress } from './Utility/Location';
+import { getAddressFromCoords, getCoordsFromAddress } from './Utility/Location';
 
 class PlaceFinder {
   constructor() {
@@ -61,13 +61,14 @@ class PlaceFinder {
     modal.show();
 
     navigator.geolocation.getCurrentPosition(
-      (succesResult) => {
+      async (succesResult) => {
         modal.hide();
         const coordinates = {
           lat: succesResult.coords.latitude,
           lng: succesResult.coords.longitude,
         };
-        this.selectPlace(coordinates);
+        const address = await getAddressFromCoords(coordinates);
+        this.selectPlace(coordinates, address);
       },
       (error) => {
         modal.hide();
@@ -93,7 +94,7 @@ class PlaceFinder {
     modal.show();
     try {
       const coordinates = await getCoordsFromAddress(address);
-      this.selectPlace(coordinates);
+      this.selectPlace(coordinates, address);
     } catch (error) {
       alert(error.message);
     }
