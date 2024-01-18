@@ -1,55 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Share a Place</title>
-    <link rel="stylesheet" href="assets/styles/app.css" />
-    <link rel="stylesheet" href="assets/styles/share-place.css" />
-    <script src="assets/scripts/SharePlace.js" defer></script>
-  </head>
-  <body>
-    <template id="modal-template">
-      <div class="backdrop"></div>
-      <div class="modal"></div>
-    </template>
-    <template id="loading-modal-content">
-      <div class="modal__content centered">
-        <div class="lds-dual-ring"></div>
-      </div>
-    </template>
 
-    <header>
-      <h1>Share a Place!</h1>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Share a Place</title>
+  <link rel="stylesheet" href="assets/styles/app.css" />
+  <link rel="stylesheet" href="assets/styles/share-place.css" />
 
-    <section id="selected-place">
-      <div id="map">
-        <p>
-          You haven't selected any place yet. Please enter an address or locate
-          yourself!
-        </p>
-      </div>
-    </section>
+  <script src="assets/scripts/SharePlace.js" defer></script>
+</head>
 
-    <section id="share-controls">
-      <input
-        id="share-link"
-        type="text"
-        readonly
-        value="Select a place to get a sharable link."
-      />
-      <button id="share-btn" disabled>Share Place</button>
-    </section>
+<body>
+  <template id="modal-template">
+    <div class="backdrop"></div>
+    <div class="modal"></div>
+  </template>
+  <template id="loading-modal-content">
+    <div class="modal__content centered">
+      <div class="lds-dual-ring"></div>
+    </div>
+  </template>
 
-    <section id="place-data">
-      <form>
-        <label for="address">Address</label>
-        <input type="text" />
-        <button type="submit">Find Place</button>
-      </form>
-      <button id="locate-btn">Get Current Location</button>
-    </section>
-  </body>
+  <header>
+    <h1>Share a Place!</h1>
+  </header>
+
+  <section id="selected-place">
+    <div id="map">
+      <p>
+        You haven't selected any place yet. Please enter an address or locate
+        yourself!
+      </p>
+    </div>
+  </section>
+
+  <section id="share-controls">
+    <input id="share-link" type="text" readonly value="Select a place to get a sharable link." />
+    <button id="share-btn" disabled>Share Place</button>
+  </section>
+
+  <section id="place-data">
+    <form>
+      <label for="address">Address</label>
+      <input type="text" />
+      <button type="submit">Find Place</button>
+    </form>
+    <button id="locate-btn">Get Current Location</button>
+  </section>
+
+  <script>
+    fetch('http://localhost:3000/getApiKey') // Update the URL accordingly
+      .then(response => response.json())
+      .then(data => {
+        const apiKey = data.apiKey;
+
+        // Create a script element
+        const scriptElement = document.createElement('script');
+
+        // Set the source with the API key
+        scriptElement.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initMap`;
+
+        // Set 'async' and 'defer' attributes
+        scriptElement.async = true;
+        scriptElement.defer = true;
+
+        // Append the script to the head
+        document.head.appendChild(scriptElement);
+
+        // Now you can use apiKey in your JavaScript code
+        console.log('API Key:', apiKey);
+      })
+      .catch(error => console.error('Error fetching API key:', error));
+  </script>
+</body>
+
 </html>
