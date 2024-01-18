@@ -1,4 +1,4 @@
-const apiKey = fetch('http://localhost:3000/getApiKey') // Update the URL accordingly
+const apiKey = fetch('http://localhost:3000/getApiKey')
   .then((response) => response.json())
   .then((data) => {
     const apiKey = data.apiKey;
